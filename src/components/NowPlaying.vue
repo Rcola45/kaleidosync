@@ -7,8 +7,8 @@
       span.name
         span(v-if="name" :style="{ transition: `opacity ${colorTransitionDuration}ms` }") {{ name }}
       br
-      span.artist
-        span(v-if="artist" :style="{ transition: `opacity ${colorTransitionDuration}ms` }") {{ artist }}
+      span.artists
+        span(v-if="artists" :style="{ transition: `opacity ${colorTransitionDuration}ms` }") {{ artists }}
 </template>
 
 <script>
@@ -24,7 +24,7 @@ export default {
       transitionendIndex: 0,
       image: '',
       name: '',
-      artist: ''
+      artists: ''
     }
   },
   computed: {
@@ -47,7 +47,7 @@ export default {
       handler (val, old) {
         const values = this.getCurrentlyPlaying(val)
         this.image = values.image
-        this.artist = values.artist
+        this.artists = values.artists
         this.name = values.name
         this.show(val, old)
         // this.transition(values)
@@ -77,8 +77,8 @@ export default {
       const name = val.name || false
       const album = val.album 
       const image = album ? album.images[1].url : false
-      const artist = album ? album.artists[0].name : ''
-      return { name, image, artist }
+      const artists = val.artists ? val.artists.map(artist => artist.name).join(', ') : ''
+      return { name, image, artists }
     }
   }
 }
@@ -104,11 +104,11 @@ img {
   @include scale(font-size 32px 18px);
 }
 
-.artist {
+.artists {
   @include scale(font-size 18px 14px);
 }
 
-.name, .artist {
+.name, .artists {
   position: relative;
   span {
   background: black;
@@ -131,7 +131,7 @@ i {
 }
 
 .initialized {
-  .name, .artist {
+  .name, .artists {
     span { opacity: 1; }
   }
 }
